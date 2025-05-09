@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:14
+    container_name: task_db
+    restart: always
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-task_user}  # Default to task_user if not set
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-task_password}  # Default to task_password if not set
+      POSTGRES_DB: ${POSTGRES_DB:-task_db}  # Default to task_db if not set
+    ports:
+      - "5432:${POSTGRES_PORT:-5432}"  # Default to 5432 if POSTGRES_PORT is not set
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - task_network
+
+  app:
+    build:
+      context: .
+      args:
+        ENV: ${ENV:-production}  # Default to production if ENV is not set
+    container_name: task_app
+    restart: always
+    depends_on:
+      - db
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    networks:
+      - task_network
+
+volumes:
+  postgres_data:
+
+networks:
+  task_network:
+    driver: bridge
