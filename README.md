@@ -46,7 +46,9 @@ After that you can decide to use either docker or local installation
 - Login: `POST /auth/login`
 - Token Refresh: `POST /auth/refresh`
 - Create Task: `POST /tasks`
+- Retrieve Task: `GET /tasks/{task_id}`
 - Update Task: `PUT /tasks/{task_id}`
+- Partially update Task: `PATCH /tasks/{task_id}`
 - Get Task List: `GET /tasks`
 - Search Tasks: `GET /tasks/search?q=<query>`
 
